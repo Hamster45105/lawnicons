@@ -7,19 +7,64 @@ on:
 
 permissions:
   contents: write
+  pull-requests: write
 
 jobs:
   optimize-svgs:
     runs-on: ubuntu-latest
-    if: github.repository == 'LawnchairLauncher/lawnicons'
+    if: github.repository == 'Hamster45105/lawnicons'
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
-      - name: Optimize SVGs
-        uses: ericcornelissen/svgo-action@v4
-        id: svgo
-      - name: Commit optimizations
-        uses: stefanzweifel/git-auto-commit-action@v5
-        if: ${{steps.svgo.outputs.DID_OPTIMIZE}}
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
         with:
-          commit_message: Optimize ${{steps.svgo.outputs.OPTIMIZED_COUNT}} SVG(s)
+          node-version: '20'
+      
+      - name: Install SVGO
+        run: npm install -g svgo svg-pathdata
+      
+      - name: Optimize SVGs
+        id: svgo
+        run: |
+          # Count SVGs before optimization
+          TOTAL_SVGS=$(find svgs/ -name "*.svg" | wc -l)
+          echo "Found $TOTAL_SVGS SVG files"
+          
+          # Create a temporary directory to store original files for comparison
+          mkdir -p /tmp/original_svgs
+          cp -r svgs/* /tmp/original_svgs/
+          
+          # Run SVGO on all SVG files
+          svgo --config=svgo.config.cjs --folder=svgs --recursive
+          
+          # Check if any files were modified
+          OPTIMIZED_COUNT=0
+          DID_OPTIMIZE=false
+          
+          for svg in svgs/*.svg; do
+            if [ -f "$svg" ]; then
+              original="/tmp/original_svgs/$(basename "$svg")"
+              if [ -f "$original" ] && ! cmp -s "$svg" "$original"; then
+                OPTIMIZED_COUNT=$((OPTIMIZED_COUNT + 1))
+                DID_OPTIMIZE=true
+              fi
+            fi
+          done
+          
+          echo "Optimized $OPTIMIZED_COUNT SVG files"
+          echo "DID_OPTIMIZE=$DID_OPTIMIZE" >> $GITHUB_OUTPUT
+          echo "OPTIMIZED_COUNT=$OPTIMIZED_COUNT" >> $GITHUB_OUTPUT
+      
+      - name: Create Pull Request
+        uses: peter-evans/create-pull-request@v7
+        if: steps.svgo.outputs.DID_OPTIMIZE == 'true'
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          commit-message: Optimize ${{steps.svgo.outputs.OPTIMIZED_COUNT}} SVG(s)
+          title: 'Optimize ${{steps.svgo.outputs.OPTIMIZED_COUNT}} SVG(s)'
+          branch: optimize-svgs
+          branch-suffix: timestamp
+          delete-branch: true
+

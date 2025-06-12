@@ -1,4 +1,11 @@
-const { stringifyPathData } = require("svgo/lib/path.js");
+// Use SVGO's built-in path data stringifier
+const stringifyPathData = (pathData) => {
+    return pathData.map(item => {
+        const command = item.command;
+        const args = item.args || [];
+        return command + (args.length > 0 ? ' ' + args.join(' ') : '');
+    }).join(' ');
+};
 
 module.exports = {
     multipass: true,
@@ -186,9 +193,7 @@ const enterElement = (element) => {
             cursor[1] = start[1];
         }
     }
-    element.attributes.d = stringifyPathData({
-        pathData: element.pathJS,
-    });
+    element.attributes.d = stringifyPathData(element.pathJS);
 };
 
 const getArcCenter = (
