@@ -38,8 +38,7 @@ The contributors who laid the foundations: [GrabsterTV](https://github.com/Grabs
 
 > [!TIP]
 > The design guidelines are also available in Figma, you can practice there.  
-> [View in Figma](https://www.figma.com/community/file/1227718471680779613)
-
+> [View in Figma](https://www.figma.com/community/file/1544976260626797886)
 
 ### Approach
 
@@ -54,7 +53,13 @@ Tips
 
 [Common issues](https://github.com/LawnchairLauncher/lawnicons/blob/develop/docs/images/common-issues-to-fix.png) • [Merged PRs](https://github.com/LawnchairLauncher/lawnicons/pulls?q=is%3Apr+is%3Amerged+label%3Aicons)
 
+### TL;DR
+
+Open your icon image in Figma and apply the guidelines point by point. This is the best way to learn and ensure a suitable icon design.
+
 ### Fundamentals
+
+[View on YouTube](https://youtu.be/XO-5IwowonQ)
 
 **1 Canvas**  
 
@@ -68,11 +73,15 @@ Tips
 
 `160 × 160 px`. The long side of an abstract icon should be `160 px`, but the other side could be smaller. In the case of curved boundaries, the margin of error is `<0.1 px`.  
 
+Note: Stroke weight and position affect icon size in Figma.  
+
 **3 Square icons**  
 
 ![](docs/images/fundamentals-3-square-icons.png)
 
 `154 × 154 px`. These are icons with `50%` or more of the edges running along the square.  
+
+Note: Stroke weight and position affect icon size in Figma.  
 
 **4 Color**  
 
@@ -84,22 +93,21 @@ All lines must be non-transparent black color: `#000000`.
 
 ![](docs/images/fundamentals-5-stroke-weights.png)
 
-Core weight: `12 px`  
-Rare cases: `14 px`, `10 px`, `8 px`  
-Fine details: `6 px` 
-
-The stroke weight should be kept at `12 px`, except in rare cases. If an icon is too minimal or dense, you'll need other weights: `14 px` for the most minimal, and `8 px` for the densest. For fine details, you can use `6 px`.
+Core stroke weight: `12 px`  
+Minimal icons: `14 px`  
+Dense icons: `10 px`  
+Ellipses, rectangles and fine details: `10 px`, `8 px`, `6 px`  
 
 Tips
 - No margin of error.
 - Don’t use a fill.
 - Remember to adjust the size of icons when you change the stroke weights. 
 
-**6 Start and end caps, joints**  
+**6 Caps and joints**  
 
-![](docs/images/fundamentals-6-start-and-end-caps-joints.png)
+![](docs/images/fundamentals-6-caps-and-joints.png)
 
-Start and end caps, as well as joints, should be rounded.  
+Caps and joints should be rounded.  
 
 **7 Corner radius**  
 
@@ -202,76 +210,30 @@ Tips
 
 ### Naming
 
+Start with examples, maybe there is a suitable one for you.  
+
+[Thousands of examples](app/assets/appfilter.xml)
+
 **App name**  
 
-The main app name should be in its native language. It can be found in app stores or primary sources.
+The main app name should be in its main language. It can be found in app stores or primary sources.
 
-Non-English apps require an additional name based on the English alphabet. At best it will be a localized official app name. If an app name is mostly made up of letters from the English alphabet, it doesn't need an additional one.
+Apps with non-English names require an additional name based on the English alphabet. At best it will be a localized official app name. If an app name is mostly made up of letters from the English alphabet, it doesn't need an additional one.
 
 Tips
 - Add localized names if available.
 - Transliterate non-English names when there are no localized ones.
+- Separate app names using `~~`. First, the main app name, then the additional one.
 - Delete things that aren't part of an app name.
 - Use the HTML character references for special symbols: for instance, `&amp;` instead of "&".
 
-[Thousands of examples](app/assets/appfilter.xml)
-
-```
-Do
-<item component="..." drawable="doviz" name="Döviz" />
-<item component="..." drawable="gps_status_and_toolbox" name="GPS Status &amp; Toolbox" />
-<item component="..." drawable="playstation" name="PlayStation" />
-<item component="..." drawable="eromodo" name="Vágyaid ~~ Eromodo" />
-
-Don't
-<item component="..." drawable="doviz" name="Döviz ~~ Doviz" />
-<item component="..." drawable="gps_status_and_toolbox" name="GPS Status & Toolbox" />
-<item component="..." drawable="playstation" name="PlayStation App" />
-<item component="..." drawable="eromodo" name="Eromodo" />
-```
-
-Separate app names using `~~`. First, the main app name, then the additional one.
-
-```
-Do • Considering the origin of the Hulu app
-<item component="..." drawable="hulu" name="Hulu ~~ フールー" />
-
-Don't
-<item component="..." drawable="hulu" name="フールー ~~ Hulu" />
-```
-
 **Icon name (drawable)**  
 
-Repeat the app name if possible. Use `a–z`, `0–9`, and `_` for spaces.  
+Repeat the app name. Use `a–z`, `0–9`, and `_` for spaces. Insert `_` before a digit at the beginning of an icon name.
 
 Tips
-- When multiple apps are linked to `1` icon, choose the most popular app name for it.
+- When multiple apps are linked to the same icon, choose the most popular app name for it.
 - Replace non-English letters with English letters.
-
-```
-Do
-<item component="..." drawable="a_and_w" name="A&amp;W" />
-<item component="..." drawable="blade_player" name="Blade Player" />
-<item component="..." drawable="lansforsakringar" name="Länsförsäkringar" />
-<item component="..." drawable="yahoo_news" name="Yahoo!ニュース ~~ Yahoo! News" />
-
-Don't
-<item component="..." drawable="aw" name="A&amp;W" />
-<item component="..." drawable="bladeplayer" name="Blade Player" />
-<item component="..." drawable="länsförsäkringar" name="Länsförsäkringar" />
-<item component="..." drawable="yahoo!_news" name="Yahoo!ニュース ~~ Yahoo! News" />
-```
-
-Insert `_` before a digit at the beginning of an icon name.
-
-```
-Do
-<item component="..." drawable="_9gag" name="9GAG" />
-
-Don't
-<item component="..." drawable="9gag" name="9GAG" />
-<item component="..." drawable="ninegag" name="9GAG" />
-```
 
 ## Icon contribution tools
 
